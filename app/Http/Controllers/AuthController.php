@@ -73,6 +73,7 @@ class AuthController extends Controller
         }
         $user->active = true;
         $user->activation_token = '';
+        $user->email_verified_at = Carbon::now();
         $user->save();
         $user->notify(new AccountActivated($user));
         return $user;
