@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Avatar;
+use Storage;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -24,10 +26,12 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
             'activation_token'  => str_random(60),
         ]);
-        $user->save();
-        $user->notify(new SignupActivate($user));
+        $user->save(); //save data
+        $avatar = Avatar::create($user->name)->getImageObject()->encode('png'); //upload avatar
+        Storage::put('avatars/'.$user->id.'/avatar.png', (string) $avatar); //save avatar
+        $user->notify(new SignupActivate($user)); //notifica created account 
         return response()->json([
-            'message' => 'Successfully created user!'], 201);
+            'message' => 'Usuario creado satisfactoriamente , recuerda confirmar tu correo electronico  !'], 201);
     }
 
     public function login(Request $request)
