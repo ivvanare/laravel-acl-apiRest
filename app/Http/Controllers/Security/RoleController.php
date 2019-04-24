@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Security\Role;
 use App\models\security\Permission;
 use App\Models\Security\PermissionRol;
-use App\Http\Requests\Security\RoleRequest;
+use App\Http\Requests\Security\CreateRoleRequest;
+use App\Http\Requests\Security\UpdateRoleRequest;
 use DB;
 
 class RoleController extends Controller
@@ -23,7 +24,7 @@ class RoleController extends Controller
         ]);
     }
 
-    public function create(RoleRequest $request)
+    public function create(CreateRoleRequest $request)
     {
         DB::beginTransaction();
         try{
@@ -62,16 +63,12 @@ class RoleController extends Controller
 
     public function edit (Request $request, $id)
     {
-        DB::transaction(function () use ($id){
-
-            $role = Role::FindOrFail($id);
-            $permissions = Permission::orderBy('sort', 'asc')->get()->groupby('module');
-            $role_permissions[] = [];
-            foreach ($Role->permissions as $permiso) {
-              $role_permissions[]= $permiso->id;
-            }
-
-        },3);
+        $role = Role::FindOrFail($id);
+        $permissions = Permission::orderBy('sort', 'asc')->get()->groupby('module');
+        $role_permissions[] = [];
+        foreach ($role->permissions as $permiso) {
+            $role_permissions[]= $permiso->id;
+        }
 
         return response()->json([
             'role' => $role,
@@ -140,7 +137,7 @@ class RoleController extends Controller
             $rol->save();
         },3);
 
-        return response()->json(['Rol desactivado con exito'], 201);
+        return response()->json(['message' =>'Rol desactivado con exito'], 201);
     }
 
     public function delete($id)
@@ -149,6 +146,6 @@ class RoleController extends Controller
             $rol = Role::find($id)->delete();
         },3);
 
-        return response()->json(['Usuario eliminado con exito'], 201);
+        return response()->json(['message' =>'rol eliminado con exito'], 201);
     }
 }

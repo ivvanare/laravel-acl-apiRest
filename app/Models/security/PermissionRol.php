@@ -9,9 +9,9 @@ use App\Models\security\Roles;
 class PermissionRol extends Model
 {
     
-    protected $table = 'permissions_role';
+    protected $table = 'permission_role';
     public $timestamps = false;
-    protected $fillable = ['permissions_id', 'role_id'];
+    protected $fillable = ['permission_id', 'role_id'];
 
     public function permission()
     {
