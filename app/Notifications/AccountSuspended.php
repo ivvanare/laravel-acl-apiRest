@@ -41,10 +41,10 @@ class AccountSuspended extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Lo sentimos , Tu cuenta a sido suspendida temporalmente.')
-                    ->line('Crees que fue un error ??')
-                    ->action('Por que me suspendieron', url('/'))
-                    ->line('Te avisaremos si tu cuenta es restablecida este atento! ;) ');
+            ->line('Lo sentimos , Tu cuenta a sido suspendida temporalmente.')
+            ->line('Crees que fue un error ??')
+            ->action('Por que me suspendieron', url('/'))
+            ->line('Te avisaremos si tu cuenta es restablecida esta atento! ;) ');
     }
 
     /**

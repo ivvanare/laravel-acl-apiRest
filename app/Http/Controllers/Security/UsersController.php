@@ -37,7 +37,7 @@ class UsersController extends Controller
             $user = User::where('active',1)->findOrFail($id);
             return response()->json(['user' => $user]);
         } catch (\Throwable $th) {
-            return response()->json(['Como llegaste aqui ???']);
+            return response()->json(["error" => "Este usuario no existe", "message" => "Como llegaste hasta aqui???."], 401);
         }
     }
 
@@ -57,19 +57,24 @@ class UsersController extends Controller
         $avatar = Avatar::create($request->name)->getImageObject()->encode('png');
         Storage::put('avatars/'.$request->id.'.png', (string) $avatar);
 
-        return response()->json(['message' => 'Usuario actualizado satisfactoriamente!'], 201);
+        return response()->json(["success" => "Usuario actualizado", "message" => "Usuario actualizado con exito"]);
 
+    }
+
+    public function show($id)
+    {
+        $user = User::where('active',1)->findOrFail($id);
+        return response()->json(['user' => $user]);
     }
 
     public function activate($id)
     {
-        
         $user = User::where('active',0)->find($id);
         $user->active = 1;
         $user->save();
         $user->notify(new AccountRestabled($user));
 
-        return response()->json(['message' => 'Usuario restablecido satisfactoriamente!'], 201);
+        return response()->json(["success" => "Usuario restablecido", "message" => "Usuario restablecido con exito"]);
     }
 
     public function desactivate($id)
@@ -79,7 +84,7 @@ class UsersController extends Controller
         $user->save();
         $user->notify(new AccountSuspended($user));
 
-        return response()->json(['Usuario suspendido con exito'], 201);
+        return response()->json(["success" => "Usuario suspendido", "message" => "Usuario suspendido con exito"]);
     }
 
     public function delete($id)
@@ -90,7 +95,7 @@ class UsersController extends Controller
             $user = User::find($id)->delete();
             $userToDelet->notify(new AccountSuspended($userToDelet));
         },3);
-        return response()->json(['Usuario eliminado con exito'], 201);
         
+        return response()->json(["success" => "Usuario eliminado", "message" => "Usuario eliminado con exito"]);       
     }
 }
