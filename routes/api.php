@@ -17,8 +17,9 @@ Route::middleware('auth:api')->get('/users', function (Request $request) {
     return $request->user();
 });
 
+//routes login register and logout
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('login', 'AuthController@login')->middleware('throttle:6,1');
+    Route::post('login', 'AuthController@login')->middleware('throttle:20,1');
     Route::post('signup', 'AuthController@signup')->middleware('throttle:10,1');
     Route::get('signup/activate/{token}', 'AuthController@signupActivate')->middleware('throttle:3,1');
   
@@ -27,6 +28,7 @@ Route::group(['prefix' => 'auth'], function () {
         Route::get('user', 'AuthController@user')->middleware('client');
     });
 });
+
 //reset password
 Route::group([    
     'namespace' => 'Auth',    
@@ -58,5 +60,12 @@ Route::group([
         Route::post('Roles/desactivate/{id}','RoleController@desactivate');
         Route::post('Roles/activate/{id}','RoleController@activate');
         Route::post('Roles/delete/{id}','RoleController@delete');
+    }
+);
+Route::group([
+    'namespace' => 'Security',
+    'middleware' => 'auth:api',]
+    , function () {
+        Route::get('Profile/{id}','UsersController@show');
     }
 );
