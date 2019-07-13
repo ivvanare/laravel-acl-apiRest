@@ -32,9 +32,14 @@ The Laravel framework is open-source software licensed under the [MIT license](h
 _Es importante que verifiques la creación del acceso personal del cliente (más info: https://laravel.com/docs/5.6/passport#client-credentials-grant-tokens) a través del comando :_
 ``` php artisan passport:client --personal ```
 
-## packages
-avatar    https://github.com/laravolt/avatar
-passport  https://laravel.com/docs/5.8/passport
+_Tambien necesitamos generar un par de claves públicas y privadas que la biblioteca de Passport utilizará para el cifrado a través del comando :_
+``` php artisan passport:install ```
+_Este comando creara las claves en:_ 
+```Dir: //storage/oauth-public.key y storage / oauth-private.key. ```
+
+## paquetes externos utilizados
+_avatar :_  https://github.com/laravolt/avatar
+_passport :_  https://laravel.com/docs/5.8/passport
 
 ### rutas
 _Crear usuario_
@@ -88,12 +93,24 @@ _se envian los valores que le corespondan_
   }
   ```
   _a la ruta:_ ``` http://acl-api.test/api/auth/login ```
-  _si el registro es satisfactorio se responde el token de autorizacion token_
+  _si el registro es satisfactorio se responde lo siguiente_
   ```
   {
     "access_token": "eyJ0eXAiOiJKV1...",
     "token_type": "Bearer",
-    "expires_at": "2020-04-09 15:37:13"
+    "expires_at": "2020-07-13 15:18:53",
+    "user": {
+        "id": 1,
+        "name": "ivan",
+        "email": "admin@admin.com",
+        "email_verified_at": "2019-07-13 15:02:46",
+        "avatar": "avatars/1.png",
+        "active": 1,
+        "deleted_at": null,
+        "created_at": "2019-07-13 15:01:48",
+        "updated_at": "2019-07-13 15:02:46",
+        "avatar_url": "/storage/avatars/1"
+    }
   }
   ```
   _para acceder a cualquier ruta en el sistema luego de estar autenticado hay hay que agregar en postman el header_
