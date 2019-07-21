@@ -17,11 +17,9 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all()->where('active',1);
+        $users = User::all();
 
-        return response()->json([
-            'users' => $users
-        ]);
+        return response()->json($users);
     }
 
     public function create(UserRequest $request)

@@ -81,7 +81,7 @@ class AuthController extends Controller
                 //'url'          =>  redirect()->intended()
             ]);
         }
-        return response()->json(["error" => "credenciales invalidas", "message" => "Correo o contraseña incorectas."], 401);
+        return response()->json(["error" => "credenciales invalidas", "message" => "Correo o contraseña incorectas."]);
     }
 
     public function logout(Request $request)
